@@ -1,6 +1,29 @@
 <template>
     <v-app>
-        <v-app-bar app color="primary" dark>
+        <v-navigation-drawer
+            v-model="drawer"
+            :clipped="$vuetify.breakpoint.lgAndUp"
+            app
+        >
+            <v-list>
+                <v-list-item>
+                    <v-text-field label="Search" append-icon="mdi-magnify" single-line clearable v-model="search"/>
+                </v-list-item>
+                <v-list-item>
+                    <v-select :items="['Search All', 'Search Names', 'Search Descriptions']" v-model="searchLocation"/>
+                </v-list-item>
+                <v-list-item>
+                    <v-switch label="Remove Cheats" v-model="removeCheats"/>
+                </v-list-item>
+                <v-list-item>
+                    <v-select :items="['Show All', 'Show Commands', 'Show Variables']" v-model="cvarFilter"/>
+                </v-list-item>
+            </v-list>
+        </v-navigation-drawer>
+
+
+        <v-app-bar app color="primary" dark :clipped-left="$vuetify.breakpoint.lgAndUp">
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title class="headline">
                 <span class="font-weight-light">TF2 Cvar Browser</span>
                 <v-btn icon
@@ -17,13 +40,13 @@
             <v-container >
                 <v-row class="text-center">
                     <v-col cols="12">
-                        <div v-if="loading || error" class="mt-5">
-                            <v-progress-circular indeterminate v-if="loading"/>
-                            <v-alert v-if="error" type="error">{{error}}</v-alert>
-                        </div>
-                        <template v-else>
-                            <cvar-table :cvars="cvars"/>
-                        </template>
+                        <v-alert v-if="error" type="error">{{error}}</v-alert>
+                        <cvar-table :cvars="cvars"
+                                    :search="search"
+                                    :search-location="searchLocation"
+                                    :remove-cheats="removeCheats"
+                                    :cvar-filter="cvarFilter"
+                        />
                     </v-col>
                 </v-row>
             </v-container>
@@ -45,7 +68,12 @@ export default {
     data: () => ({
         error: '',
         loading: true,
-        cvars: null
+        cvars: null,
+        drawer: null,
+        search: '',
+        searchLocation: 'Search All',
+        removeCheats: false,
+        cvarFilter: 'Show All'
     }),
     mounted: async function()
     {

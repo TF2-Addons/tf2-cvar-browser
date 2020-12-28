@@ -22,7 +22,7 @@
                             <v-alert v-if="error" type="error">{{error}}</v-alert>
                         </div>
                         <template v-else>
-                            Loaded :)
+                            <cvar-table :cvars="cvars"/>
                         </template>
                     </v-col>
                 </v-row>
@@ -34,10 +34,12 @@
 <script>
 import DarkSwitch from './components/DarkSwitch';
 import localforage from 'localforage';
+import CvarTable from '@/components/CvarTable';
 
 export default {
     name: 'App',
     components: {
+        CvarTable,
         DarkSwitch
     },
     data: () => ({

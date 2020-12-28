@@ -1,4 +1,4 @@
-# tf2-cvar-browser
+# TF2 Cvar Browser
 
 ## Project setup
 ```
@@ -14,6 +14,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

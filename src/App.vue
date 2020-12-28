@@ -17,7 +17,13 @@
             <v-container >
                 <v-row class="text-center">
                     <v-col cols="12">
-                        Hello World
+                        <div v-if="loading || error" class="mt-5">
+                            <v-progress-circular indeterminate v-if="loading"/>
+                            <v-alert v-if="error" type="error">{{error}}</v-alert>
+                        </div>
+                        <template v-else>
+                            Loaded :)
+                        </template>
                     </v-col>
                 </v-row>
             </v-container>
@@ -27,11 +33,34 @@
 
 <script>
 import DarkSwitch from './components/DarkSwitch';
+import localforage from 'localforage';
 
 export default {
     name: 'App',
     components: {
         DarkSwitch
+    },
+    data: () => ({
+        error: '',
+        loading: true,
+        cvars: null
+    }),
+    mounted: async function()
+    {
+        try
+        {
+            this.cvars = await localforage.getItem('cvars');
+            if(!this.cvars)
+            {
+                this.cvars = await (await fetch('https://tf2-addons.github.io/tf2-cvar-scraper/cvars.json')).json();
+                await localforage.setItem('cvars', this.cvars);
+            }
+        }
+        catch(e)
+        {
+            this.error = e;
+        }
+        this.loading = false;
     }
 };
 </script>

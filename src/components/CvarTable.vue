@@ -16,7 +16,7 @@
 <script>
 export default {
     name: 'CvarTable',
-    props: ['cvars', 'search', 'searchLocation', 'removeCheats', 'cvarFilter'],
+    props: ['cvars', 'search', 'searchLocation', 'removeCheats', 'removeServer', 'cvarFilter'],
     computed: {
         loading()
         {
@@ -31,6 +31,7 @@ export default {
             return this.cvars.filter(cvar =>
             {
                 return !((this.removeCheats && cvar.flags.indexOf('cheat') !== -1) ||
+                        (this.removeServer && cvar.flags.indexOf('sv') !== -1) ||
                         (this.cvarFilter === 'Show Commands' && cvar.defValue !== 'cmd') ||
                         (this.cvarFilter === 'Show Variables' && cvar.defValue === 'cmd'));
             });

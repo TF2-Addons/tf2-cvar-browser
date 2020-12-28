@@ -16,6 +16,9 @@
                     <v-switch label="Remove Cheats" v-model="removeCheats"/>
                 </v-list-item>
                 <v-list-item>
+                    <v-switch label="Remove Server" v-model="removeServer"/>
+                </v-list-item>
+                <v-list-item>
                     <v-select :items="['Show All', 'Show Commands', 'Show Variables']" v-model="cvarFilter"/>
                 </v-list-item>
             </v-list>
@@ -45,6 +48,7 @@
                                     :search="search"
                                     :search-location="searchLocation"
                                     :remove-cheats="removeCheats"
+                                    :remove-server="removeServer"
                                     :cvar-filter="cvarFilter"
                         />
                     </v-col>
@@ -73,6 +77,7 @@ export default {
         search: '',
         searchLocation: 'Search All',
         removeCheats: false,
+        removeServer: false,
         cvarFilter: 'Show All'
     }),
     mounted: async function()
